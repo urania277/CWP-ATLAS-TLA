@@ -1,0 +1,383 @@
+\documentclass[a4paper,justified]{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+% For A4 paper
+\geometry{
+  left=14.8mm, % left margin
+  %right=14.8mm, % right margin
+  textwidth=150mm, % main text block
+  marginparsep=3.5mm, % gutter between main text block and margin notes
+  marginparwidth=25.4mm % width of margin notes
+}
+
+\usepackage{amsmath}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Trigger-object Level Analysis with the ATLAS detector at the Large Hadron Collider\\ Summary and perspectives.}
+\author[Experiment]{Antonio Boveia, Caterina Doglioni, William Kalderon,\\
+(1) The Ohio State University (2) Division of Particle Physics, Department of Physics, Lund University}
+\date{09 December 2016}  % if the \date{} command is left out, the current date will be used
+
+\fancyhf{} % Can make a shorter running head
+\fancyhead[LE]{\textsc{\thepage}}
+\fancyhead[RE]{\textsc{LHCitizen science}} 
+\fancyhead[LO]{\textsc{LHCitizen science}} 
+\fancyhead[RO]{\thepage} 
+
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+\usepackage{wrapfig}
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=11pt}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\begin{document}
+
+%\begin{fullwidth}
+
+\maketitle% this prints the handout title, author, and date
+
+
+
+
+\begin{fullwidth}
+\vspace{-10px}
+
+\begin{abstract}
+%BK: as of now it is only a placeholder, moved here the old summary/conclusion. 
+
+%The research theme of the selected projects should involve e-science method development with a connection to strategic computational applications. 
+
+\noindent This document summarizes the motivations, challenges and perspectives on the Trigger-object Level Analysis in ATLAS. It is intended as a complement to the HEP Software Foundation Community Whitepaper on trigger and reconstruction. 
+\end{abstract}
+
+\end{fullwidth}
+
+%CD: disregard the comments marked STYLE - for more info see Style by J. M. Williams
+
+\vspace{-15px}
+\section{Importance and goals of the project}\label{sec:goals}
+\vspace{-10px}
+
+%(i) the goal and importance of the project and the novelty compared to the current state-of-the-art
+
+%STYLE Shared context and interesting fact
+As part of our quest to understand the fundamental components of matter, researchers
+in particle physics from all over the world have built experiments to record
+and analyse collision data from the Large Hadron Collider (LHC) at the CERN
+international laboratory in Geneva.  The success of the LHC research program
+is a consequence of the excellent performance of the collider and of the experiments, as well as the precise
+theoretical predictions of signals and expected backgrounds. The LHC experiments have required the
+development of tools to integrate a vast array of theoretical, experimental
+and computational cutting edge knowledge. The Particle Physics Division at
+LU is at the forefront of this research, in the ATLAS and ALICE
+experiments' searches for new physics phenomena, as well as in the development
+of e-science tools. Approximately 5000 scientists from all over the world are
+involved in the two experiments, pooling resources and knowledge towards the
+understanding of the fundamental constituents of our universe. To date, the
+research program at the LHC has produced more than 1500 peer-reviewed
+experimental papers, including the paper announcing the discovery of the Higgs
+boson in 2012~\cite{Aad:2012tfa}.
+
+%STYLE Problem: condition
+However, the wealth of knowledge produced by the LHC experiments is still not
+completely accessible to all scientists. LHC results need to be shared in a
+format that is understandable not only to the scientists who produced them, but to all actors involved. Theoretical physicists, particle
+physicists from other experiments and laboratories, and astrophysicists are among those
+actors. Even though CERN committed to make the results openly accessible
+through both Open Access publications and Open Data platforms~\footnote{CERN
+  OpenData Portal and policies: \url{http://opendata.cern.ch/}}, a fully
+successful data and analysis sharing requires time and dedicated personnel. As
+a consequence, results are often shared in a way that is not fully usable by
+other actors, including even other LHC researchers, or not shared at
+all~\footnote{A notable example is the lack of publicly available digitized
+  data for the Higgs boson discovery analysis.}.
+%Cost
+If LHC data is not made accessible, one might not realize the full
+potential of the experimental results, and one risks that results are
+perceived as a sterile collection of measurements published for their own sake.
+%, and the divide between general public and academics working on incomprehensible subjects grows. % (repeats below)
+This has negative consequences for science as a whole. If a publicly funded
+research topic is deemed fruitless and remote by the public, it means that the resources
+that the public invests are not used efficiently and the distance between
+academics studying "incomprehensible subjects" and general public 
+grows. Moreover, data that is not shared among different communities will not
+lead to cross-collaborations between fields that study different aspects of
+the same phenomenon, e.g. the nature of the vast majority of dark matter in
+the universe or non-perturbative QCD phenomena such as the quark-gluon
+plasma. Dedicated work by particle physicists is needed to make
+the LHC data and the complicated analysis tools more accessible to the public
+and to other scientific communities who can benefit from them. Making this data and the related analysis tools more accessible is the first goal of the \texttt{LHCitizenScience} project. 
+
+%STYLE Solution
+%BK: here we should state our goals
+Furthermore, there is a long tradition of citizen science activities at CERN. Citizen science involves the general public in data analysis of high energy physics experiments. The most recent example is the~\texttt{HiggsHunters} project, in which 32000 volunteers from 179 countries contributed to data analysis with the ATLAS experiment at CERN~\cite{Barr:2016vce} using e-science tools. One of the authors of this project, Charles William Kalderon, is currently a postdoc at LU in the ATLAS group and a valuable asset for the proposed project. The second goal of the \texttt{LHCitizenScience} is to involve the public in such projects, bridging the divide between high energy physics experiments and the local community, embedding the research done by ATLAS and ALICE teams in Lund into citizen science projects. 
+
+The project's overall aim is to improve the accessibility of LHC data by advancing knowledge sharing, both across scientific communities and between scientists and general public, deploying cross-discipline data analysis frameworks, and by engaging the public in citizen science. The specific goals of this project are: 
+\begin{enumerate}
+\itemsep0em
+\item enabling the ALICE and ATLAS results sharing on multiple platforms, %Rivet
+\item building strategic collaborations between different departments in the Science Faculty of Lund University through sharing data and analysis tools, %MCTool and MCNet and tuning 
+\item engaging Lund University as one of the main actors in a citizen science project, %BOINC on university computers
+\item proving that it is possible to involve the general public and university employees in particle physics data analysis, %BOINC and Jupyter 
+\item reaching out to Swedish high schools through dedicated initiatives in collaboration with the Department of Physics and with CERN.%Masterclasses
+\end{enumerate}
+
+\section{Development of e-science methods for more accessible particle physics data}\label{sec:methods}
+%(ii) the method development and application contents of the project, 
+\vspace{-10px}
+
+%%%CD must shorten this: science in ATLAS and ALICE
+% the text below covers the application domain. It is a bit long. 
+The ATLAS experiment at the LHC seeks to study physics processes within the current Standard Model (SM) of particle physics, as well as discover physics phenomena beyond our current knowledge. The Lund ATLAS group has analysed proton-proton collisions from the LHC in search of new physics phenomena since the start of data taking in 2010. Such phenomena are required to explain the existence of massive "dark" matter present within our universe in amounts by far exceeding the normal matter, as observed from indirect gravitational and cosmological observations~\cite{Bertone:2004pz}. 
+The observation of dark matter particles not yet included in the SM would solve this nearly a century old puzzle. A novel line of research pioneered by the Lund ATLAS group seeks to discover signs of dark matter particles in new regions of the parameter space that have never been explored before, through the use of real-time data analysis techniques. This work is funded by Caterina Doglioni's ERC Starting Grant DARKJETS (Grant Agreement No. 679305) and a VR grant.
+%The DARKJETS group is formed by Dr. Doglioni, who is also PI of this proposal, 
+%two PhD students and a post-doctoral researcher, while the VR grant supports an additional PhD student working on related topics. 
+%%%%%%%%  OS: commented the above for consistency with ALICE detail %%%%%%%%%%%%%%
+
+
+The ALICE experiment analyses heavy ion collisions at LHC, which reproduce the
+quark-gluon plasma (QGP) that was present in the early universe, approximately
+10 millisecond after the Big Bang.  The main goal of ALICE is to study this
+new state of matter which exhibits ultra-strong collective properties -- the
+most perfect liquid discovered by mankind. It was expected that the QGP would
+only be produced in large systems such as heavy ion collisions, but,
+unexpectedly, even very small systems, such as the proton-proton collisions
+mainly studied by ATLAS, involve underlying processes with the same
+behavior. The origin of this behaviour is widely debated by the scientific
+community and provides an overlapping region of active research between the
+ATLAS, ALICE, and the theoretical phenomenology group at Lund
+University. Peter Christiansen is the PI for the Lund ALICE project.
+
+The two PIs of this project are thus involved in the ATLAS and the ALICE
+experiments, respectively, and have close collaborations with the theoretical
+physics department. It should be stressed that these two experiments do not
+usually work together, due to the lack of tools to share results and
+data. Through development of common tools, this project aims to remove
+barriers between ALICE and ATLAS and to get researchers from other domains and
+the general public involved in particle physics research. A set of method
+developments are necessary for this purpose, as detailed below.
+
+\vspace{-10px}
+\paragraph{Enabling the ALICE and ATLAS results sharing on multiple platforms.} 
+
+%State of the art
+%CD notes
+%Problem
+%Pb-Pb and p-Pb not in RIVET nor on HEPData
+%ATLAS analyses not in RIVET nor on HEPData
+%Cost
+%Can't share results from ALICE or ATLAS with theory community
+%Can't redo analysis on simulated data
+%Solution
+%This project will implement these things
+%State of the art
+Experimental physicists record the outcomes of collisions at LHC using complex
+detectors, and analyse the data, measuring parameters of fundamental particles
+and forces and searching for new physics phenomena. Data are always compared
+to theoretical models based on our current understanding of nature and new
+physics phenomena; such models are implemented in simulation software. One of
+the most successful modelling software used in particle physics, called \textsc{Pythia}~\cite{Sjostrand:2006za}, has been developed by the theoretical physics division at LU. It must be noted though that theoretical physicists and particle physicists from other laboratories do not normally have access to the LHC data first-hand. 
+%, collecting over 1000 citations through its peer-reviewed review manual. 
+%The software-generated data can then be passed through detector simulations and analysed as if they were real LHC data. 
+Researchers compare the results of analyses of real and simulated data, as
+well as those from different experiments, validating or challenging our
+understanding of nature and allowing for progress in both theory and
+experiment. A key component in testing theoretical models is the ability to
+precisely compare model predictions to data, in particular for small systems
+due to the relatively large importance of fluctuations. In the ATLAS community
+it is well known that experimental results have to be complemented with a
+description of how the results were experimentally determined. Only in this way can theoretical models
+and experimental data be put on equal footing and the existing qualitative
+ideas can then be replaced by quantitative comparisons. This mode of operation needs a common framework to share data, analysis code and results. The state of the art data sharing and software platforms include HEPData~\cite{Buckley:2010jn} and Rivet~\cite{Buckley:2010ar}. HEPData is an online database of particle physics results submitted voluntarily by research teams. It allows direct comparisons of outcomes of different experiments and studies. Rivet is a generic software framework containing a comprehensive set of routines and methods for collider data analysis, interfaced to HEPData.
+%Furthermore, experimental particle physicists implement their data analysis in software programs such as Rivet. The data generated can be analysed through Rivet, and then quantitatively compared to the HEPData results from the experiments themselves. 
+
+The ALICE experiment is not currently able to share all their results through
+Rivet, as heavy-ion collisions are not implemented there yet. This will be
+overcome within this project, as the heavy-ion-collision mode, mainly the
+ability to study the impact-parameter dependence of results, will be deployed
+with the help of the Rivet authors. Once that is done, data can be shared
+effectively between ATLAS and ALICE, theorists at LU and other
+researchers worldwide. Analysis tools and results from the DARKJETS project
+will also be submitted to HEPData and made available in Rivet for theorists
+and astrophysicists working on dark matter models.
+
+%Share DARKJETS results on HEPData
+%pick up stuff from Peter's 2nd email
+%When heavy-ion analzyes are implemented in Rivet it will be possible for citizens to measure e.g. the elliptic flow of the generated events (in "LHC@Home") and compare to published ALICE data in HEPdata.
+
+\vspace{-10px}
+\paragraph{Building strategic collaborations between different departments in the Science Faculty of Lund University through sharing data and analysis tools} %MCTool and MCNet and tuning 
+
+This activity involves Department of Astronomy and Theoretical Physics and Department of Physics, and the collaboration will proceed through sharing results and analysis code, as outlined above. Further links will be established by this research proposal through citizen science platforms. 
+Volunteer computing platforms for LHC allow anyone with a computer to contribute to collision simulations necessary for scientific analysis, typically when their computers are not used. The performance of such distributed computing platforms is in the TeraFLOP range and enjoys a growing popularity, at times providing more processing power than some professional computing centres. Beyond providing Cloud-like resources for free, it is a very useful mean for public outreach and popularization of LHC physics.
+
+The Test4Theory project~\footnote{Test4Theory:
+  \url{http://lhcathome.web.cern.ch/projects/test4theory}}, developed recently
+within one of these platforms, focuses on simulations for theoretical models
+with different input parameters, allowing to find those that describe data
+best. This provides essential input to theorists in LU and
+worldwide, as large amounts of the data generated via volunteer computing can be used to distinguish subtle features in the distributions studied within the comparison of these models. 
+This project naturally ties into the work within Rivet and HEPData discussed above. Theorists will be able to directly compare the generated data and data distributions that would otherwise not be accessible from theorists who are not member of the collaboration. The work planned within this proposal
+will ensure that the processes that are of most use for the ALICE and ATLAS
+collaborations are simulated within Test4Theory, and that there is a broad
+support for volunteer computing within the university and outside. This will
+stimulate further collaboration between the theoretical physics and particle physics divisions at LU. The general public, including LU staff, will also be able to generate data and perform  comparisons on a dedicated website, as described below. 
+
+%I think it would be good to be more concrete if possible:
+%\begin{itemize}
+%\item Why do we need this data? Is it pure outreach or is it needed for
+%  physics
+%\item I think it is natural to integrate this with Rivet and HEPData. Either,
+%  weak = they can see how their generated data matches up with results. Or
+%  strong = one can use Rivet as an analysis of simulated data, maybe via some
+%  java applet that one could develop.
+%\end{itemize}
+
+\vspace{-10px}
+\paragraph{Involving Lund University as one of the main actors in a citizen science project} %BOINC on university computers
+
+The involvement of the University in a volunteer computing project is a unique feature of this proposal. Within this research proposal, we aim to deploy the Test4Theory platform mentioned above on a number of Lund University research and administration desktop computers, starting from the physics department. The general public will also be engaged in volunteer computing trough public outreach events. 
+
+This proposal also targets the ATLAS@Home~\footnote{ATLAS@Home: \url{http://atlasathome.cern.ch}} platform that uses the same volunteer computing framework. This platform is dedicated to simulations of particle collisions in the ATLAS detector. Dark matter analyses within DARKJETS will benefit enormously from inclusion of their physics processes of interest into this platform, as they require massive simulation of background events. 
+%For Oxana: do we develop this? Out of space...
+% OS: let's be vague :-)
+%Despite the fact that the individual contributors are unknown to the physicists and are not subject to standard operational procedures, control or monitoring, the service they offer is very valuable and much appreciated.
+
+\vspace{-10px}
+\paragraph{Proving that it is possible to involve the general public and university employees in particle physics data analysis.} %BOINC and Jupyter 
+
+A novel aspect of this proposal is that in addition to the volunteer computing initiative we will also provide professional and citizen scientists with new tools to analyse real and simulated data. The ATLAS Open Data project~\footnote{ATLAS Open Data portal: \url{http://opendata.atlas.cern}} provides a framework in which we propose to implement the dark matter analyses within the DARKJETS program, allowing everybody to visualize the data and to analyse it first-hand using the offered open source software and our assistance. 
+
+\vspace{-10px}
+\paragraph{Reaching out to Swedish high schools through dedicated initiatives in collaboration with CERN.}%Masterclasses
+
+The many outreach activities that are already ongoing within the particle
+physics department will serve as platform to promote the citizen science
+projects. International Masterclasses~\footnote{Hands on Particle Physics
+  Masterclasses: \url{http://physicsmasterclasses.org}} are among these
+activities: gymnasium students spend a day at the university, follow lectures,
+perform measurements on real data and join a video conference with CERN to
+discuss their results. Continued collaboration with the Vattenhallen Science
+Center is also planned within this project, through the organization of
+dedicated events introducing the LHC citizen science in Lund.
+%come to one of about 200 nearby universities or research centres for one day in order to unravel the mysteries of particle physics. Lectures from active scientists give insight in topics and methods of basic research at the fundaments of matter and forces, enabling the students to perform measurements on real data from particle physics experiments themselves. At the end of each day, like in an international research collaboration, the participants join in a video conference for discussion and combination of their results. See here for media coverage.
+This project will also be presented in the physics outreach sessions of major international conferences, such as the European Physics Society conference, International Conference on High Energy Physics etc.. 
+
+\vspace{-10px}
+\section{Collaborations within this project} \label{sec:collaborations}
+\vspace{-10px}
+
+
+%(iii) potential for, or planned, collaborations within this project (geographical between the eSSENCE nodes and/or between applied and generic e-science are- as and/or between other actors which have not traditionally worked together e.g. different disciplines or collaboration with industry and society outside academia), 
+
+
+
+Figure~\ref{fig:Participants} shows the various participants and stakeholders for this LHCitizen Science project. The partners at the particle physics level are ATLAS and ALICE. The ATLAS and ALICE groups are part of the Swedish LHC consortium, including Uppsala and Stockholm Universities and KTH. The LU physics divisions that have interest in this project beyond the particle physics division one are theoretical physics and astronomy. LU employees and the general public, especially gymnasium students, will also be involved in this project. The collaborative novelty of the \texttt{LHCitizenScience} project consists in having all these communities  actively participate to research in a single environment. 
+
+\begin{wrapfigure}{r}{0.5\textwidth} 
+%\begin{figure}[t!]
+\centering
+	\includegraphics[width=0.5\textwidth]{eSSENCE_fig.pdf}
+  \caption{Participants in the LHCitizen Science project}
+    	\label{fig:Participants}
+%\end{figure}
+\end{wrapfigure}
+%Interdisciplinary collaboration between different groups is important for a successful proposal.
+
+The main goal of the research project is to facilitate new collaborations across different actors, starting from high energy physicists at LU up to the general public in Sweden, that will be made possible through sharing results and resources. ATLAS and ALICE are already large international collaborations, seeing an involvement of 100 and 40 countries respectively. These international scientific environments will be where the e-science method development will be carried out. 
+%%%%%% OS: no need for numbers here, we already mentioned 5000 above %%%%%%%
+
+%List of names of the institutes we collaborate with: 
+%No space. Reinstate if space?
+
+%Torbjoern Sjostrand - MCPlots 
+%http://lhcathome.web.cern.ch/projects/test4theory
+
+%Leif Lonnblad - RIVET
+
+%Astronomy department - they use the DMSummary plot digitized data for WIMP rule out etc
+
+%LHC Consortium in Sweden, including Uppsala (eSSENCE partner), Stockholm (KTH/SU). 
+
+%Oxford University with citizen science project
+
+%Masterclass/student mentoring (look up who the student was), plan to collaborate with local high schools.
+
+%Vattenhallen. Researchers night, collaborate more. 
+%Swedish student will help. Not belonging to this call. 
+
+\vspace{-10px}
+\section{Project implementation and financing} \label{sec:implementation}
+\vspace{-10px}
+%(iv) the status concerning persons to be funded (does a candidate exist? If yes - brief credentials for this person should be supplied. If not – briefly describe the recruitment plans.), 
+%(v) amount and type of any co-funding. 
+
+%Applicants may request 2-3 years of funding, starting July 1 2017. We anticipate being able to fund 4-5 grants in the region of 300-500 kSEK (including overhead) per year. If the programme continues as expected, there will be SEK 2.0 million available. The funding could be used, for example, for part-financing a PhD student or a post-doc.
+
+The proposed \textbf{2 years} research project will be carried out by a post-doc researcher to be employed at the Particle Physics Division. We have already identified a candidate for the position who will be invited as part of an open recruitment process. Dr Clara Nellist is a particle physicist working on the ATLAS experiment at CERN and is a passionate science communicator. After gaining her PhD at the University of Manchester (UK) she is concluding a post-doctoral research position at LAL (France). 
+%Her current research focuses on improvements to the pixel detector layers of ATLAS. This would fit well with the Lund DARKJETS interest in the development of a new trigger hardware component that will happen in 2017. 
+Her communication and outreach work has a strong focus on particle physics and equal opportunities in science. She was the winner of the UK "I'm a Scientist" outreach project~\footnote{I'm a Scientist, Get me out of here: \url{http://imascientist.org.uk}} in March 2014. Dr. Nellist has an extensive expertise in involving secondary school students in LHC research and in giving numerous outreach talks worldwide. 
+%including a TEDx talk in Bulgaria and a Science Slam talk in the US. 
+
+%%Bozena has been asked
+The estimated cost of such a two-year contract is 1.666.000 SEK, including overhead and a 2\% annual salary increase. Travel to CERN to work with ATLAS and ALICE open data experts and to international conferences in order to present this work will amount to an additional 80.000 SEK per year. With this proposal we are applying for \textbf{432.500 SEK per year}. The remaining amount is to be covered by the funds from the DARKJETS ERC grant.  
+
+%No gantt chart. Just write what we do. Two year project. We have a person. It matches nicely because of the dissemination activity planned for the last year. Planned citizen science of this activity extend/complement with novel methods the work package 4 on dissemination (not necessary). Missing aspect in DARKJETS: citizen science.
+
+The foreseen start date of the project is July 2017 with an end date in July 2019. 
+%Most of the work will be done in Lund, although some shorter travels to CERN are also necessary. 
+Over the course of this project, the candidate will work on the searches for
+dark matter within the DARKJETS scientific objectives for 50\% of the
+time. The remaining time will be devoted to this eSSENCE project, innovating
+on the existing dissemination objectives of DARKJETS. Initially, the volunteer
+computing platform including LU ATLAS and ALICE research topics
+will be deployed. The newly implemented features will be advertised on the
+ATLAS@Home and Test4Theory web sites, and propagated to the public through
+local media, social media and outreach events organized by the University and
+Vattenhallen. Once the infrastructure is in place, it will be continuously
+promoted and supported, and implementation of the searches and measurements
+will start. The ATLAS dark matter search will be implemented within the
+analysis tools provided by the ATLAS Open Data initiative, as well as within
+dedicated tools that are usable by other research communities. The last part
+of the project will be dedicated to making ATLAS DARKJETS results available on
+HEPData, and to the novel implementation of heavy-ion collision and ALICE results in the Rivet framework.  
+
+%http://opendata.cern.ch/collection/ATLAS
+
+Overall, this project will enhance future prospects for communication and knowledge transfer in particle physics through e-science tools. This will allow the Department of Physics, Lund University as a whole, and the general public to act as a single community in the pursuit of understanding the fundamental components of matter. 
+
+\clearpage
+
+\bibliography{eSSENCE}
+%\nobibliography
+\bibliographystyle{plain}
+
+\end{document}
